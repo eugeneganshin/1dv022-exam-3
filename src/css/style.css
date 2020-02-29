@@ -1,5 +1,5 @@
 body {
-    background-image: url('logos/background.jpg');
+    background-image: url('/image/background/background.jpg');
     background-repeat: no-repeat;
     background-size: 100% 1080px;
 }
@@ -16,4 +16,9 @@ body {
     height: 50px;
     flex-direction: row;
     justify-content: center; 
-  }
+}
+
+#logo-mem {
+    width: 30px;
+    height: 30px;
+}
