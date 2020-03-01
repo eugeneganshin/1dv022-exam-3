@@ -52,7 +52,7 @@ export class Drag extends window.HTMLElement {
 
     this.container = this.shadowRoot.querySelector('#container')
     this.header = this.shadowRoot.querySelector('#header')
-    this.main = this.shadowRoot.querySelector('.main')
+    this.main = document.querySelector('.main')
     this.isDown = false
     this.elementX = 0
     this.elementY = 0
@@ -62,10 +62,10 @@ export class Drag extends window.HTMLElement {
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
     })
-    document.addEventListener('mouseup', e => {
+    this.main.addEventListener('mouseup', e => {
       this.onMouseUp(e)
     })
-    document.addEventListener('mousemove', e => {
+    this.main.addEventListener('mousemove', e => {
       this.onMouseMove(e)
     })
   }

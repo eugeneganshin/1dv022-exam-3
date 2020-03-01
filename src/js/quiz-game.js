@@ -16,6 +16,9 @@ export class QuizGameRef extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(templateRef_.content.cloneNode(true))
 
+    this.header = this.shadowRoot.querySelector('.header')
+    this.container = this.shadowRoot.querySelector('.container')
+
     this.scoreBoard = this.shadowRoot.querySelector('.score-board')
     this.pScore = this.shadowRoot.querySelector('#p-score')
     this.scoreList = this.shadowRoot.querySelector('#score-list')
@@ -49,6 +52,10 @@ export class QuizGameRef extends window.HTMLElement {
     this.timeLeft = 10
     this.totalTime = 0
     this.countTime = setTimeout(args => { }, 0)
+
+    this.isDown = false
+    this.elementX = 0
+    this.elementY = 0
   }
 
   connectedCallback () {
@@ -71,6 +78,20 @@ export class QuizGameRef extends window.HTMLElement {
       this._hideStartForm()
       this.getQuestion(this.nextURL)
       this.getAnswer()
+    })
+    /**
+     * Listens for mouse position on the header div
+     * Listens for the mouse position on the window
+     * If mouse is up then stops listening
+     */
+    this.header.addEventListener('mousedown', e => {
+      this.onMouseDown(e)
+    })
+    document.addEventListener('mouseup', e => {
+      this.onMouseUp(e)
+    })
+    document.addEventListener('mousemove', e => {
+      this.onMouseMove(e)
     })
   }
 
@@ -274,6 +295,34 @@ export class QuizGameRef extends window.HTMLElement {
   }
 
   /**
+   * Functions below are for that you could drag the element
+   * @param {event} e The event
+   */
+
+  onMouseDown (e) {
+    this.isDown = true
+
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
+  }
+
+  onMouseUp (e) {
+    this.isDown = false
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseMove (e) {
+    e.preventDefault()
+    if (!this.isDown) return
+    const deltaX = e.clientX - this.mouseX
+    const deltaY = e.clientY - this.mouseY
+    this.container.style.left = this.elementX + deltaX + 'px'
+    this.container.style.top = this.elementY + deltaY + 'px'
+  }
+
+  /**
    *  Validates the input field if its empty
    */
   _validateForm () {
@@ -357,4 +406,4 @@ export class QuizGameRef extends window.HTMLElement {
   }
 }
 
-window.customElements.define('x-quiz-game-ref', QuizGameRef)
+window.customElements.define('x-quiz-game', QuizGameRef)
