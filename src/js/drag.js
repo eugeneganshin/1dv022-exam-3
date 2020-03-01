@@ -1,33 +1,44 @@
 const templateDrag = document.createElement('template')
 templateDrag.innerHTML = `
 <style>
-.container {
+#container {
   z-index: 9;
+  width: 412px;
+  min-height:200px;
   background-color: #f1f1f1;
   border: 1px solid #d3d3d3;
   text-align: center;
-  width:200px;
   position: absolute;
 }
 
-#header {
+#header {;
   padding: 10px;
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
   cursor: move;
+  display: flex;
+}
+
+.display {
+  height:200px;
+}
+
+img {
+  min-width: 50px;
+  max-width: 100px;
 }
 
 </style>
-<div class="container">
+<div id="container">
   <div id="header"></div>
-  <div id="heh">Click</div>
-  <div id="list">
-    <ul>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-    </ul>
+  <div class="display">
+  </div>
+  <div class="menu">
+    <div id="allButtons">
+      <button id="easy">Easy</button>
+      <button id="medium">Medium</button>
+    </div>
   </div>
 </div>
 `
@@ -39,8 +50,9 @@ export class Drag extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(templateDrag.content.cloneNode(true))
 
-    this.container = this.shadowRoot.querySelector('.container')
+    this.container = this.shadowRoot.querySelector('#container')
     this.header = this.shadowRoot.querySelector('#header')
+    this.main = this.shadowRoot.querySelector('.main')
     this.isDown = false
     this.elementX = 0
     this.elementY = 0
@@ -73,6 +85,7 @@ export class Drag extends window.HTMLElement {
   }
 
   onMouseMove (e) {
+    e.preventDefault()
     if (!this.isDown) return
     const deltaX = e.clientX - this.mouseX
     const deltaY = e.clientY - this.mouseY

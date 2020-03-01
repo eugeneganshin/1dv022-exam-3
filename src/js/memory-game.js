@@ -1,4 +1,57 @@
-import { pictures, templateMem } from './templates.js'
+const pictures = document.createElement('template')
+pictures.innerHTML = `
+<a href="#"><img src="image/memory-game/0.png" /></>
+`
+const templateMem = document.createElement('template')
+templateMem.innerHTML = `
+<style>
+img {
+  min-width: 50px;
+  max-width: 100px;
+}
+.mem-game {
+  z-index: 9;
+  width: 412px;
+  min-height:200px;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  text-align: center;
+  position: absolute;
+}
+.com-header {
+  padding: 10px;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  cursor: move;
+}
+}
+.display {
+
+  display: flex;
+}
+.menu {
+  text-align: center;
+  position:absolute;
+  bottom: 0;
+  width:412px;
+}
+.hide {
+  visibility: hidden;
+}
+</style>
+<div class="mem-game">
+  <div class="com-header"></div>
+  <div class="display">
+  </div>
+  <div class="menu">
+    <div id="allButtons">
+      <button id="easy">Easy</button>
+      <button id="medium">Medium</button>
+    </div>
+  </div>
+</div>
+`
 
 export class MemoryGame extends window.HTMLElement {
   constructor () {
@@ -9,6 +62,8 @@ export class MemoryGame extends window.HTMLElement {
 
     this.allBtn = this.shadowRoot.querySelector('#allButtons')
     this.display = this.shadowRoot.querySelector('.display')
+    this.header = this.shadowRoot.querySelector('.com-header')
+    this.container = this.shadowRoot.querySelector('.mem-game')
     this.self = this
 
     this.turn1 = null
@@ -16,9 +71,23 @@ export class MemoryGame extends window.HTMLElement {
     this.lastTile = null
     this.pairs = 0
     this.try = 0
+
+    this.isDown = false
+    this.elementX = 0
+    this.elementY = 0
   }
 
   connectedCallback () {
+    this.header.addEventListener('mousedown', e => {
+      this.onMouseDown(e)
+      console.log('click')
+    })
+    document.addEventListener('mouseup', e => {
+      this.onMouseUp(e)
+    })
+    document.addEventListener('mousemove', e => {
+      this.onMouseMove(e)
+    })
     this.allBtn.addEventListener('click', event => {
       if (event.target.id === 'easy') {
         this.updateLevel('easy')
@@ -101,6 +170,29 @@ export class MemoryGame extends window.HTMLElement {
         }, 500)
       }
     }
+  }
+
+  onMouseDown (e) {
+    this.isDown = true
+
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
+  }
+
+  onMouseUp (e) {
+    this.isDown = false
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseMove (e) {
+    e.preventDefault()
+    if (!this.isDown) return
+    const deltaX = e.clientX - this.mouseX
+    const deltaY = e.clientY - this.mouseY
+    this.container.style.left = this.elementX + deltaX + 'px'
+    this.container.style.top = this.elementY + deltaY + 'px'
   }
 }
 
