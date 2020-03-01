@@ -1,25 +1,34 @@
 const templateDrag = document.createElement('template')
 templateDrag.innerHTML = `
 <style>
-#container {
-  position: absolute;
+.container {
   z-index: 9;
   background-color: #f1f1f1;
   border: 1px solid #d3d3d3;
   text-align: center;
+  width:200px;
+  position: absolute;
 }
 
 #header {
   padding: 10px;
-  cursor: move;
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
+  cursor: move;
 }
 
 </style>
-<div id="container">
-  <div id="header">Click</div>
+<div class="container">
+  <div id="header"></div>
+  <div id="heh">Click</div>
+  <div id="list">
+    <ul>
+      <li>1</li>
+      <li>1</li>
+      <li>1</li>
+    </ul>
+  </div>
 </div>
 `
 
@@ -30,33 +39,147 @@ export class Drag extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(templateDrag.content.cloneNode(true))
 
-    this.container = this.shadowRoot.querySelector('#container')
+    this.container = this.shadowRoot.querySelector('.container')
     this.header = this.shadowRoot.querySelector('#header')
-
-    this.pos1 = 0
-    this.pos2 = 0
-    this.pos3 = 0
-    this.pos4 = 0
+    this.isDown = false
+    this.elementX = 0
+    this.elementY = 0
   }
 
   connectedCallback () {
-    this.header.addEventListener('click', event => {
-      this.dragMouseDown(event)
-      event.preventDefault()
+    this.header.addEventListener('mousedown', e => {
+      this.onMouseDown(e)
+    })
+    document.addEventListener('mouseup', e => {
+      this.onMouseUp(e)
+    })
+    document.addEventListener('mousemove', e => {
+      this.onMouseMove(e)
     })
   }
 
-  dragMouseDown (event) {
-    console.log(event)
-    event = event || window.event
-    this.pos3 = event.clientX
-    this.pos4 = event.clientY
+  onMouseDown (e) {
+    this.isDown = true
+
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
   }
 
-  elementDrag (event) {
-    console.log(event)
-    event = event || window.event
+  onMouseUp (e) {
+    this.isDown = false
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseMove (e) {
+    if (!this.isDown) return
+    const deltaX = e.clientX - this.mouseX
+    const deltaY = e.clientY - this.mouseY
+    this.container.style.left = this.elementX + deltaX + 'px'
+    this.container.style.top = this.elementY + deltaY + 'px'
   }
 }
 
 window.customElements.define('x-drag', Drag)
+
+// drag () {
+//   var mousemove = function (e) { // document mousemove
+//     this.style.left = (e.clientX - this.dragStartX) + 'px'
+//     this.style.top = (e.clientY - this.dragStartY) + 'px'
+//     console.log(this)
+//   }.bind(this)
+
+//   var mouseup = function (e) { // document mouseup
+//     document.removeEventListener('mousemove', mousemove)
+//     document.removeEventListener('mouseup', mouseup)
+//     console.log(this)
+//   }
+
+//   this.addEventListener('mousedown', function (e) { // element mousedown
+//     this.dragStartX = e.offsetX
+//     this.dragStartY = e.offsetY
+
+//     document.addEventListener('mousemove', mousemove)
+//     document.addEventListener('mouseup', mouseup)
+//     console.log(this)
+//   }.bind(this))
+
+//   this.style.position = 'absolute' // fixed might work as well
+// }
+
+// ////////////
+// // working fiddle
+// this.isDown = false
+// this.elementX = 0
+// this.elementY = 0
+// }
+
+// connectedCallback () {
+// this.container.addEventListener('mousedown', e => {
+//   this.onMouseDown(e)
+// })
+// this.container.addEventListener('mouseup', e => {
+//   this.onMouseUp(e)
+// })
+// document.addEventListener('mousemove', e => {
+//   this.onMouseMove(e)
+// })
+// }
+
+// onMouseDown (e) {
+// this.isDown = true
+
+// this.mouseX = e.clientX
+// this.mouseY = e.clientY
+// }
+
+// onMouseUp (e) {
+// this.isDown = false
+
+// this.elementX = parseInt(this.container.style.left) || 0
+// this.elementY = parseInt(this.container.style.top) || 0
+// }
+
+// onMouseMove (e) {
+// if (!this.isDown) return
+// const deltaX = e.clientX - this.mouseX
+// const deltaY = e.clientY - this.mouseY
+// this.container.style.left = this.elementX + deltaX + 'px'
+// this.container.style.top = this.elementY + deltaY + 'px'
+// }
+
+/** last one */
+// this.isDown = false
+// this.elementX = 0
+// this.elementY = 0
+// }
+
+// connectedCallback () {
+// this.header.addEventListener('mousedown', e => {
+//   this.onMouseDown(e)
+// })
+// document.addEventListener('mousemove', e => {
+//   this.onMouseMove(e)
+// })
+// document.addEventListener('mouseup', e => this.onMouseUp())
+// }
+
+// onMouseDown (e) {
+// this.isDown = true
+// this.mouseX = e.clientX
+// this.mouseY = e.clientY
+// }
+
+// onMouseMove (e) {
+// if (this.isDown) {
+//   this.container.style.left = (e.clientX - this.mouseX) + 'px'
+//   this.container.style.top = (e.clientY - this.mouseY) + 'px'
+// }
+// }
+
+// onMouseUp () {
+// this.isDown = false
+// this.elementX = parseInt(this.container.style.left) || 0
+// this.elementY = parseInt(this.container.style.top) || 0
+// }

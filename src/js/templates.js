@@ -7,7 +7,6 @@ templateMem.innerHTML = `
 <style>
 :host {  
   position: absolute;
-  z-index: 9;
   width: 412px;
   min-height:200px;
   display:flex;
