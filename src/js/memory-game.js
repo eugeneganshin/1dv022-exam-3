@@ -9,49 +9,50 @@ img {
   min-width: 50px;
   max-width: 100px;
 }
-.mem-game {
+.container {
+  border-radius: 25px 25px 25px 25px;
   z-index: 9;
   width: 412px;
   min-height:200px;
   background-color: #f1f1f1;
-  border: 1px solid #d3d3d3;
+  border: 1px solid #f1f1f1;
   text-align: center;
   position: absolute;
+  padding-bottom: 20px;
 }
-.com-header {
+.header {
+  border-radius: 25px 25px 0px 0px;
   padding: 10px;
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
   cursor: move;
+  
 }
 }
 .display {
-  display: flex;
   background-color: #2196F3;
 }
-#allButtons {
+.hide {
+  visibility: hidden;
+}
+.menu {
   background-color: #2196F3;
   text-align: center;
   position:absolute;
   bottom: 0;
   width:412px;
-  padding-top: 10px;
-}
-.hide {
-  visibility: hidden;
+  border-radius: 0px 0px 25px 25px;
 }
 </style>
-<div class="mem-game">
-  <div class="com-header"></div>
-  
+<div class="container">
+  <div class="header"></div>
+  <div class="display"></div>
   <div class="menu">
     <div id="allButtons">
       <button id="easy">Easy</button>
       <button id="medium">Medium</button>
     </div>
-  </div>
-  <div class="display">
   </div>
 </div>
 `
@@ -65,8 +66,8 @@ export class MemoryGame extends window.HTMLElement {
 
     this.allBtn = this.shadowRoot.querySelector('#allButtons')
     this.display = this.shadowRoot.querySelector('.display')
-    this.header = this.shadowRoot.querySelector('.com-header')
-    this.container = this.shadowRoot.querySelector('.mem-game')
+    this.header = this.shadowRoot.querySelector('.header')
+    this.container = this.shadowRoot.querySelector('.container')
     this.self = this
 
     this.turn1 = null
