@@ -27,14 +27,16 @@ img {
 }
 }
 .display {
-
   display: flex;
+  background-color: #2196F3;
 }
-.menu {
+#allButtons {
+  background-color: #2196F3;
   text-align: center;
   position:absolute;
   bottom: 0;
   width:412px;
+  padding-top: 10px;
 }
 .hide {
   visibility: hidden;
@@ -42,13 +44,14 @@ img {
 </style>
 <div class="mem-game">
   <div class="com-header"></div>
-  <div class="display">
-  </div>
+  
   <div class="menu">
     <div id="allButtons">
       <button id="easy">Easy</button>
       <button id="medium">Medium</button>
     </div>
+  </div>
+  <div class="display">
   </div>
 </div>
 `
