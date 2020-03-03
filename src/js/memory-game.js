@@ -25,7 +25,7 @@ img {
 .header {
   border-radius: 8px 8px 0px 0px;
   padding: 10px;
-  z-index: 10;
+  z-index: auto;
   background-color: #2196F3;
   color: #fff;
   cursor: move;
@@ -92,8 +92,7 @@ export class MemoryGame extends window.HTMLElement {
     this.isDown = false
     this.elementX = 0
     this.elementY = 0
-    this.zIndex = 10
-
+    this.indexZ = 'auto'
     this.getPosition = this.getPosition()
   }
 
@@ -105,7 +104,6 @@ export class MemoryGame extends window.HTMLElement {
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
       this.getZindexOnDown()
-      console.log('click')
     })
     document.addEventListener('mouseup', e => {
       e.preventDefault()
@@ -200,8 +198,12 @@ export class MemoryGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * Functions below are to track z-index
+   */
   getPosition () {
-    console.log(this.divComponents.children.length)
+    // console.log(this.divComponents.children.length)
+    console.log(this.container.style.zIndex)
     if (this.divComponents.children.length > 0) {
       this.container.style.top = `${this.divComponents.children.length * 10}px`
       this.container.style.left = `${this.divComponents.children.length * 10}px`
@@ -209,11 +211,13 @@ export class MemoryGame extends window.HTMLElement {
   }
 
   getZindexOnDown () {
-    this.container.style.zIndex = this.zIndex + 2
+    this.container.style.zIndex = '1'
+    // console.log(this.container.style.zIndex)
   }
 
   getZindexOnUp () {
     this.container.style.zIndex = 'auto'
+    // console.log(this.container.style.zIndex)
   }
 
   /**
