@@ -16,25 +16,26 @@
     height: 50px;
     flex-direction: row;
     justify-content: center; 
-}
+}*/
 
-#logo-mem {
-    width: 30px;
-    height: 30px;
-} */
+img {
+    width: 50;
+    height: 50px;
+} 
 html {
   font-family: "Lucida Sans", sans-serif;
 }
 
-.header {
-  background-color: #9933cc;
-  color: #ffffff;
-  padding: 15px;
-}
-.footer {
-  background-color: #0099cc;
-  color: #ffffff;
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
   text-align: center;
-  font-size: 12px;
-  padding: 15px;
+  border-top: 1px solid grey;
+  padding: 5px;
+}
+
+.components {
+  height: 100px;
 }

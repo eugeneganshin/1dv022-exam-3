@@ -10,24 +10,35 @@ img {
   max-width: 100px;
 }
 .container {
-  border-radius: 25px 25px 25px 25px;
-  z-index: 9;
-  width: 412px;
+  border-radius: 8px 8px 2px 2px;
+  z-index: 10;
+  width: 420px;
   min-height:200px;
   background-color: #f1f1f1;
   border: 1px solid #f1f1f1;
   text-align: center;
   position: absolute;
+  top:0;
+  left: 0px;
   padding-bottom: 20px;
 }
 .header {
-  border-radius: 25px 25px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
   padding: 10px;
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
   cursor: move;
   
+}
+
+#close-btn {
+  display: inline;
+  margin: 0;
+  padding: 0px 20px 0px 0px;
+  margin-top: -10px;
+  float: right;
+  cursor: pointer;
 }
 }
 .display {
@@ -41,12 +52,12 @@ img {
   text-align: center;
   position:absolute;
   bottom: 0;
-  width:412px;
-  border-radius: 0px 0px 25px 25px;
+  width:420px;
+  border-radius: 0px 0px 2px 2px;
 }
 </style>
 <div class="container">
-  <div class="header"></div>
+  <div class="header"><p id="close-btn">x</p></div>
   <div class="display"></div>
   <div class="menu">
     <div id="allButtons">
@@ -64,10 +75,12 @@ export class MemoryGame extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(templateMem.content.cloneNode(true))
 
+    this.divComponents = document.querySelector('.components')
     this.allBtn = this.shadowRoot.querySelector('#allButtons')
     this.display = this.shadowRoot.querySelector('.display')
     this.header = this.shadowRoot.querySelector('.header')
     this.container = this.shadowRoot.querySelector('.container')
+    this.close = this.shadowRoot.querySelector('#close-btn')
     this.self = this
 
     this.turn1 = null
@@ -79,17 +92,28 @@ export class MemoryGame extends window.HTMLElement {
     this.isDown = false
     this.elementX = 0
     this.elementY = 0
+    this.zIndex = 10
+
+    this.getPosition = this.getPosition()
   }
 
   connectedCallback () {
+    this.close.addEventListener('click', event => {
+      event.preventDefault()
+      this.remove()
+    })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
+      this.getZindexOnDown()
       console.log('click')
     })
     document.addEventListener('mouseup', e => {
+      e.preventDefault()
+      this.getZindexOnUp()
       this.onMouseUp(e)
     })
     document.addEventListener('mousemove', e => {
+      e.preventDefault()
       this.onMouseMove(e)
     })
     this.allBtn.addEventListener('click', event => {
@@ -176,6 +200,26 @@ export class MemoryGame extends window.HTMLElement {
     }
   }
 
+  getPosition () {
+    console.log(this.divComponents.children.length)
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
+    }
+  }
+
+  getZindexOnDown () {
+    this.container.style.zIndex = this.zIndex + 2
+  }
+
+  getZindexOnUp () {
+    this.container.style.zIndex = 'auto'
+  }
+
+  /**
+   * Functions below are for dragging the element
+   * @param {event} e The event
+   */
   onMouseDown (e) {
     this.isDown = true
 

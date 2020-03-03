@@ -42,17 +42,19 @@ templateRef_.innerHTML = `
 <style>
 
 .container {
-  border-radius: 25px 25px 25px 25px;
-  z-index: 9;
-  min-width: 400px;
+  border-radius: 8px 8px 2px 2px;
+  z-index: 10;
+  min-width: 420px;
   background-color: #f1f1f1;
   border: 1px solid #f1f1f1;
   text-align: center;
   position: absolute;
+  top:0;
+  left: 0px;
   padding-bottom: 20px;
 }
 .header {
-  border-radius: 25px 25px 0px 0px;
+  border-radius: 8px 8px 0px 0px;
   padding: 10px;
   z-index: 10;
   background-color: #2196F3;
