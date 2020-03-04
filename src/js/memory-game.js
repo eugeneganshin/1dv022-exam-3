@@ -94,7 +94,6 @@ export class MemoryGame extends window.HTMLElement {
     this.elementY = this.container.offsetLeft
     this.indexZ = 'auto'
     this.getPosition = this.getPosition()
-    this.offset = this.offset()
   }
 
   connectedCallback () {
@@ -197,12 +196,6 @@ export class MemoryGame extends window.HTMLElement {
         }, 500)
       }
     }
-  }
-
-  offset () {
-    // const rect = this.getBoundingClientRect()
-    // console.log(rect.top, rect.right, rect.bottom, rect.left)
-    // this.offsetTop =
   }
 
   /**
