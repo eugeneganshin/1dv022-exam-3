@@ -90,10 +90,11 @@ export class MemoryGame extends window.HTMLElement {
     this.try = 0
 
     this.isDown = false
-    this.elementX = 0
-    this.elementY = 0
+    this.elementX = this.container.offsetTop
+    this.elementY = this.container.offsetLeft
     this.indexZ = 'auto'
     this.getPosition = this.getPosition()
+    this.offset = this.offset()
   }
 
   connectedCallback () {
@@ -198,12 +199,17 @@ export class MemoryGame extends window.HTMLElement {
     }
   }
 
+  offset () {
+    // const rect = this.getBoundingClientRect()
+    // console.log(rect.top, rect.right, rect.bottom, rect.left)
+    // this.offsetTop =
+  }
+
   /**
    * Functions below are to track z-index
    */
   getPosition () {
     // console.log(this.divComponents.children.length)
-    console.log(this.container.style.zIndex)
     if (this.divComponents.children.length > 0) {
       this.container.style.top = `${this.divComponents.children.length * 10}px`
       this.container.style.left = `${this.divComponents.children.length * 10}px`
@@ -229,6 +235,9 @@ export class MemoryGame extends window.HTMLElement {
 
     this.mouseX = e.clientX
     this.mouseY = e.clientY
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
   }
 
   onMouseUp (e) {

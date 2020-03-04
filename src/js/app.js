@@ -5,7 +5,9 @@ import { Chat } from './chat.js'
 const components = document.querySelector('.components')
 const img = document.querySelector('#logo-mem')
 img.addEventListener('click', event => {
-  components.appendChild(new MemoryGame())
+  setTimeout(() => {
+    components.appendChild(new MemoryGame())
+  }, 0)
 })
 
 // Maybe track z index in app.js
