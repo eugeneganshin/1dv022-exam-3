@@ -35,3 +35,22 @@ footer {
   border-top: 1px solid grey;
   padding: 5px;
 }
+
+#a {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: blue;
+}
+#b {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: red;
+}
+#c {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: green;
+}

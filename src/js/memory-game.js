@@ -5,6 +5,10 @@ pictures.innerHTML = `
 const templateMem = document.createElement('template')
 templateMem.innerHTML = `
 <style>
+:host {
+  position: absolute;
+  z-index: 10;
+}
 img {
   min-width: 50px;
   max-width: 100px;
@@ -92,22 +96,23 @@ export class MemoryGame extends window.HTMLElement {
     this.isDown = false
     this.elementX = this.container.offsetTop
     this.elementY = this.container.offsetLeft
-    this.indexZ = 'auto'
+    this.indexZ = 10
     this.getPosition = this.getPosition()
   }
 
   connectedCallback () {
+    console.log(this.style.zIndex)
     this.close.addEventListener('click', event => {
       event.preventDefault()
       this.remove()
     })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
-      this.getZindexOnDown()
+      // this.getZindexOnDown()
     })
     document.addEventListener('mouseup', e => {
       e.preventDefault()
-      this.getZindexOnUp()
+      // this.getZindexOnUp()
       this.onMouseUp(e)
     })
     document.addEventListener('mousemove', e => {
@@ -123,12 +128,25 @@ export class MemoryGame extends window.HTMLElement {
     })
   }
 
-  updateLevel (param) {
-    if (param === 'easy') {
-      this.getArrayOfPictures(8)
-    } else {
-      this.getArrayOfPictures(16)
+  /**
+   * Functions below are to track z-index
+   */
+  getPosition () {
+    // console.log(this.divComponents.children.length)
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
     }
+  }
+
+  getZindexOnDown () {
+    this.container.style.zIndex = this.zIndex
+    // console.log(this.container.style.zIndex)
+  }
+
+  getZindexOnUp () {
+    this.container.style.zIndex = 'auto'
+    // console.log(this.container.style.zIndex)
   }
 
   getArrayOfPictures (condition) {
@@ -196,27 +214,6 @@ export class MemoryGame extends window.HTMLElement {
         }, 500)
       }
     }
-  }
-
-  /**
-   * Functions below are to track z-index
-   */
-  getPosition () {
-    // console.log(this.divComponents.children.length)
-    if (this.divComponents.children.length > 0) {
-      this.container.style.top = `${this.divComponents.children.length * 10}px`
-      this.container.style.left = `${this.divComponents.children.length * 10}px`
-    }
-  }
-
-  getZindexOnDown () {
-    this.container.style.zIndex = '1'
-    // console.log(this.container.style.zIndex)
-  }
-
-  getZindexOnUp () {
-    this.container.style.zIndex = 'auto'
-    // console.log(this.container.style.zIndex)
   }
 
   /**

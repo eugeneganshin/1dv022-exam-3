@@ -10,6 +10,10 @@ img.addEventListener('click', event => {
   }, 0)
 })
 
+// const memGame = document.createElement('x-game')
+
+// document.querySelector('.components').appendChild(memGame)
+// memGame.setAttribute('zIndex', '200')
 // Maybe track z index in app.js
 
 // Maybe inside of webcomponent i can write a custom attribuet so when i click
@@ -17,3 +21,7 @@ img.addEventListener('click', event => {
 // change z-index to 1
 
 // add limit viewport
+
+/**
+ * make custom attribute, change z index on click, update custom attribure
+ */
