@@ -16,15 +16,27 @@ export class Chat extends window.HTMLElement {
     this.startBtn = this.shadowRoot.querySelector('#start')
 
     this.display = this.shadowRoot.querySelector('.display')
+    this.menu = this.shadowRoot.querySelector('.menu')
     this.inputMsg = this.shadowRoot.querySelector('#input-msg')
     this.messages = this.shadowRoot.querySelector('#messages')
     this.sendBtn = this.shadowRoot.querySelector('#send')
 
     this.username = 'Anon'
     this.style.zIndex = 10
+
+    this.socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/')
+
+    this.data = {
+      type: 'message',
+      data: 'hello',
+      username: 'John',
+      channel: 'my, not so secret, channel',
+      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    }
   }
 
   connectedCallback () {
+    // helpers
     this.getPosition()
     this.addEventListener('mousedown', e => {
       this.setZindex()
@@ -36,6 +48,7 @@ export class Chat extends window.HTMLElement {
       this.username = this.startForm.value
       this._hideStartForm()
       this._showChatDisplay()
+      this._showMenu()
     })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
@@ -48,6 +61,30 @@ export class Chat extends window.HTMLElement {
       e.preventDefault()
       this.onMouseMove(e)
     })
+    // logic
+    this.sendBtn.addEventListener('click', e => {
+      this.sendMsg(this.inputMsg.value)
+    })
+
+    this.socket.addEventListener('open', e => {
+      this.socket.send(JSON.stringify(this.data))
+    })
+    this.socket.addEventListener('message', e => {
+      console.log(e.data)
+    })
+  }
+
+  sendMsg (msg) {
+    // console.log(msg)
+    const data = {
+      type: 'message',
+      data: `${msg}`,
+      username: 'John',
+      channel: 'my, not so secret, channel',
+      key: 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    }
+    JSON.stringify(data)
+    console.log(JSON.stringify(data))
   }
 
   /**
@@ -60,6 +97,10 @@ export class Chat extends window.HTMLElement {
     } else {
       this.startBtn.disabled = false
     }
+  }
+
+  _showMenu () {
+    this.menu.style.display = 'block'
   }
 
   _showChatDisplay () {

@@ -1,4 +1,4 @@
-
+// Quiz template
 export const templateRef_ = document.createElement('template')
 templateRef_.innerHTML = `
 <div class="container">
@@ -113,7 +113,7 @@ templateRef_.innerHTML = `
 }
 </style>
 `
-
+// Chat template
 export const templateChat_ = document.createElement('template')
 templateChat_.innerHTML = `
 <div class="container">
@@ -127,14 +127,12 @@ templateChat_.innerHTML = `
   </div>
  <div class="display">
   <ul id="messages">
-    <li>hey</li>
-    <li>hi</li>
-    <li>lol</li>
   </ul>
+ </div>
+ <div class="menu">
   <input id="input-msg" type="text">
   <button id="send">Send</button>
  </div>
- <div class="menu"></div>
 </div>
 
 <style>
@@ -183,9 +181,19 @@ templateChat_.innerHTML = `
 #p-inline {
   display: inline;
 }
+
+.menu {
+  background-color: #2196F3;
+  text-align: center;
+  position:absolute;
+  bottom: 0;
+  width:420px;
+  border-radius: 0px 0px 2px 2px;
+  display: none;
+}
 </style>
 `
-
+// Memory Game template
 export const templatePic_ = document.createElement('template')
 templatePic_.innerHTML = `
 <a href="#"><img src="image/memory-game/0.png" /></>

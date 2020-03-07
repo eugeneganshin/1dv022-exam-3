@@ -34,7 +34,9 @@ export class MemoryGame extends window.HTMLElement {
     })
     this.close.addEventListener('click', event => {
       event.preventDefault()
-      this.remove()
+      window.setTimeout(() => {
+        this.divComponents.removeChild(this)
+      }, 0)
     })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
