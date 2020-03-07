@@ -96,23 +96,21 @@ export class MemoryGame extends window.HTMLElement {
     this.isDown = false
     this.elementX = this.container.offsetTop
     this.elementY = this.container.offsetLeft
-    this.indexZ = 10
+    this.style.zIndex = 10
     this.getPosition = this.getPosition()
   }
 
   connectedCallback () {
-    console.log(this.style.zIndex)
     this.close.addEventListener('click', event => {
       event.preventDefault()
       this.remove()
     })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
-      // this.getZindexOnDown()
+      this.setZindex()
     })
     document.addEventListener('mouseup', e => {
       e.preventDefault()
-      // this.getZindexOnUp()
       this.onMouseUp(e)
     })
     document.addEventListener('mousemove', e => {
@@ -128,6 +126,34 @@ export class MemoryGame extends window.HTMLElement {
     })
   }
 
+  setZindex () {
+    let max = 0
+    const divChildren = this.divComponents.childNodes
+    divChildren.forEach((element, index) => {
+      if (element.tagName === 'X-GAME') {
+        let z = 0
+        z = parseInt((element.style.zIndex), 10)
+        if ((z > max) && (z !== 'auto')) {
+          max = z
+          this.style.zIndex = max + 1
+        }
+      }
+    })
+    // let max = 0
+    // const divChildren = this.divComponents.childNodes
+    // divChildren.forEach((elem, index) => {
+    //   if (elem.tagName === 'X-GAME') {
+    //     let z = parseInt((elem.style.zIndex), 10)
+    //     if (elem.style.zIndex > max) {
+    //       z = parseInt((elem.style.zIndex), 10)
+    //     }
+    //     max = Math.max(max, z)
+    //   }
+    // })
+    // this.style.zIndex = max + 1
+    // console.log(this.style.zIndex)
+  }
+
   /**
    * Functions below are to track z-index
    */
@@ -137,16 +163,6 @@ export class MemoryGame extends window.HTMLElement {
       this.container.style.top = `${this.divComponents.children.length * 10}px`
       this.container.style.left = `${this.divComponents.children.length * 10}px`
     }
-  }
-
-  getZindexOnDown () {
-    this.container.style.zIndex = this.zIndex
-    // console.log(this.container.style.zIndex)
-  }
-
-  getZindexOnUp () {
-    this.container.style.zIndex = 'auto'
-    // console.log(this.container.style.zIndex)
   }
 
   getArrayOfPictures (condition) {
