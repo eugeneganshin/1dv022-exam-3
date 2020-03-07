@@ -1,82 +1,11 @@
-const pictures = document.createElement('template')
-pictures.innerHTML = `
-<a href="#"><img src="image/memory-game/0.png" /></>
-`
-const templateMem = document.createElement('template')
-templateMem.innerHTML = `
-<style>
-:host {
-  position: absolute;
-}
-img {
-  min-width: 50px;
-  max-width: 100px;
-}
-.container {
-  border-radius: 8px 8px 2px 2px;
-  z-index: 10;
-  width: 420px;
-  min-height:200px;
-  background-color: #f1f1f1;
-  border: 1px solid #f1f1f1;
-  text-align: center;
-  position: absolute;
-  top:0;
-  left: 0px;
-  padding-bottom: 20px;
-}
-.header {
-  border-radius: 8px 8px 0px 0px;
-  padding: 10px;
-  z-index: auto;
-  background-color: #2196F3;
-  color: #fff;
-  cursor: move;
-  
-}
-
-#close-btn {
-  display: inline;
-  margin: 0;
-  padding: 0px 20px 0px 0px;
-  margin-top: -10px;
-  float: right;
-  cursor: pointer;
-}
-}
-.display {
-  background-color: #2196F3;
-}
-.hide {
-  visibility: hidden;
-}
-.menu {
-  background-color: #2196F3;
-  text-align: center;
-  position:absolute;
-  bottom: 0;
-  width:420px;
-  border-radius: 0px 0px 2px 2px;
-}
-</style>
-<div class="container">
-  <div class="header"><p id="close-btn">x</p></div>
-  <div class="display"></div>
-  <div class="menu">
-    <div id="allButtons">
-      <button id="easy">Easy</button>
-      <button id="medium">Medium</button>
-    </div>
-  </div>
-</div>
-`
+import { templateMem_, templatePic_ } from './templates.js'
 
 export class MemoryGame extends window.HTMLElement {
   constructor () {
     super()
 
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(templateMem.content.cloneNode(true))
+    this.shadowRoot.appendChild(templateMem_.content.cloneNode(true))
 
     this.divComponents = document.querySelector('.components')
     this.allBtn = this.shadowRoot.querySelector('#allButtons')
@@ -138,14 +67,22 @@ export class MemoryGame extends window.HTMLElement {
     this.delegate(arr)
   }
 
+  updateLevel (param) {
+    if (param === 'easy') {
+      this.getArrayOfPictures(8)
+    } else {
+      this.getArrayOfPictures(16)
+    }
+  }
+
   delegate (tiles) {
     while (this.display.firstChild) {
       this.display.removeChild(this.display.firstChild)
     }
-    const imgElem = pictures.content.childNodes[1].childNodes[0]
+    const imgElem = templatePic_.content.childNodes[1].childNodes[0]
     tiles.forEach((tile, index) => {
       imgElem.setAttribute('data-img-number', index)
-      this.display.appendChild(pictures.content.cloneNode(true))
+      this.display.appendChild(templatePic_.content.cloneNode(true))
     })
     this.display.addEventListener('click', event => {
       const img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild

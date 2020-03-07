@@ -1,81 +1,11 @@
-const template = document.createElement('template')
-template.innerHTML = `
-<div class="container">
- <div class="header"><p id="close">x</p></div>
- <div class="container-start">
-    <form id="start-form">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username">
-    </form><br>
-    <p id="p-inline">Start chatting </p><button id="start" disabled>Start</button>
-  </div>
- <div class="display">
-  <ul id="messages">
-    <li>hey</li>
-    <li>hi</li>
-    <li>lol</li>
-  </ul>
-  <input id="input-msg" type="text">
-  <button id="send">Send</button>
- </div>
- <div class="menu"></div>
-</div>
-
-<style>
-:host {
-  position: absolute;
-}
-.container {
-  border-radius: 8px 8px 2px 2px;
-  z-index: 10;
-  min-width: 420px;
-  background-color: #f1f1f1;
-  border: 1px solid #f1f1f1;
-  text-align: center;
-  position: absolute;
-  top:0;
-  left: 0px;
-  padding-bottom: 20px;
-}
-.header {
-  border-radius: 8px 8px 0px 0px;
-  padding: 10px;
-  z-index: 10;
-  background-color: #2196F3;
-  color: #fff;
-  cursor: move;
-}
-
-#close {
-  display: inline;
-  margin: 0;
-  padding: 0px 20px 0px 0px;
-  margin-top: -10px;
-  float: right;
-  cursor: pointer;
-}
-
-.display {
-  display: none;
-  min-height:200px;
-}
-
-.container-start {
-  margin-top: 10px;
-}
-
-#p-inline {
-  display: inline;
-}
-</style>
-`
+import { templateChat_ } from './templates.js'
 
 export class Chat extends window.HTMLElement {
   constructor () {
     super()
 
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this.shadowRoot.appendChild(templateChat_.content.cloneNode(true))
 
     this.divComponents = document.querySelector('.components')
     this.header = this.shadowRoot.querySelector('.header')
