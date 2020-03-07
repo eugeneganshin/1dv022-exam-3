@@ -2,11 +2,19 @@ import { MemoryGame } from './memory-game.js'
 import { QuizGameRef } from './quiz-game.js'
 import { Drag } from './drag.js'
 import { Chat } from './chat.js'
+
 const components = document.querySelector('.components')
-const img = document.querySelector('#logo-mem')
-img.addEventListener('click', event => {
+const imgMem = document.querySelector('#logo-mem')
+const imgQuiz = document.querySelector('#logo-chat')
+
+imgMem.addEventListener('click', event => {
   setTimeout(() => {
     components.appendChild(new MemoryGame())
+  }, 0)
+})
+imgQuiz.addEventListener('click', e => {
+  setTimeout(() => {
+    components.appendChild(new QuizGameRef())
   }, 0)
 })
 

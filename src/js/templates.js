@@ -40,7 +40,9 @@ templateRef_.innerHTML = `
 </div>
 
 <style>
-
+:host {
+  position: absolute;
+}
 .container {
   border-radius: 8px 8px 2px 2px;
   z-index: 10;

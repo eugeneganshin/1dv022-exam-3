@@ -16,6 +16,7 @@ export class QuizGameRef extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(templateRef_.content.cloneNode(true))
 
+    this.divComponents = document.querySelector('.components')
     this.header = this.shadowRoot.querySelector('.header')
     this.container = this.shadowRoot.querySelector('.container')
 
@@ -48,6 +49,7 @@ export class QuizGameRef extends window.HTMLElement {
     this.restartBtnScore = this.shadowRoot.querySelector('#restart-btn-score')
 
     this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
+    this.style.zIndex = 10
     this.players = []
     this.timeLeft = 10
     this.totalTime = 0
@@ -59,6 +61,10 @@ export class QuizGameRef extends window.HTMLElement {
   }
 
   connectedCallback () {
+    this.getPosition()
+    this.addEventListener('mousedown', e => {
+      this.setZindex()
+    })
     /**
      * Checks if the input is not empty
      * @memberof QuizGameRef
@@ -292,6 +298,35 @@ export class QuizGameRef extends window.HTMLElement {
       this.getAnswer()
       this.restartDiv.style.display = 'none'
     })
+  }
+
+  /**
+   * Tracks highest zIndex in parent node and updates the current one
+   */
+  setZindex () {
+    let max = 0
+    const divChildren = this.divComponents.childNodes
+    divChildren.forEach((element, index) => {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME')) {
+        let z = 0
+        z = parseInt((element.style.zIndex), 10)
+        if ((z > max) && (z !== 'auto')) {
+          max = z
+          this.style.zIndex = max + 1
+        }
+      }
+    })
+  }
+
+  /**
+   * Changes position of new element based on length of parent node
+   */
+  getPosition () {
+    // console.log(this.divComponents.children.length)
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
+    }
   }
 
   /**
