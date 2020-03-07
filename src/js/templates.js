@@ -125,12 +125,9 @@ templateChat_.innerHTML = `
     </form><br>
     <p id="p-inline">Start chatting </p><button id="start" disabled>Start</button>
   </div>
- <div class="display">
-  <ul id="messages">
-  </ul>
- </div>
+ <div class="messages"></div>
  <div class="menu">
-  <input id="input-msg" type="text">
+  <input id="input-msg" type="text" maxlength="50">
   <button id="send">Send</button>
  </div>
 </div>
@@ -169,7 +166,7 @@ templateChat_.innerHTML = `
   cursor: pointer;
 }
 
-.display {
+.messages {
   display: none;
   min-height:200px;
 }
