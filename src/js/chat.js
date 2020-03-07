@@ -22,6 +22,9 @@ template.innerHTML = `
 </div>
 
 <style>
+:host {
+  position: absolute;
+}
 .container {
   border-radius: 8px 8px 2px 2px;
   z-index: 10;
@@ -74,6 +77,7 @@ export class Chat extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
+    this.divComponents = document.querySelector('.components')
     this.header = this.shadowRoot.querySelector('.header')
     this.container = this.shadowRoot.querySelector('.container')
 
@@ -87,9 +91,14 @@ export class Chat extends window.HTMLElement {
     this.sendBtn = this.shadowRoot.querySelector('#send')
 
     this.username = 'Anon'
+    this.style.zIndex = 10
   }
 
   connectedCallback () {
+    this.getPosition()
+    this.addEventListener('mousedown', e => {
+      this.setZindex()
+    })
     this.startForm.addEventListener('input', event => {
       this._validateForm()
     })
@@ -97,7 +106,17 @@ export class Chat extends window.HTMLElement {
       this.username = this.startForm.value
       this._hideStartForm()
       this._showChatDisplay()
-      console.log(this.username)
+    })
+    this.header.addEventListener('mousedown', e => {
+      this.onMouseDown(e)
+    })
+    document.addEventListener('mouseup', e => {
+      e.preventDefault()
+      this.onMouseUp(e)
+    })
+    document.addEventListener('mousemove', e => {
+      e.preventDefault()
+      this.onMouseMove(e)
     })
   }
 
@@ -147,6 +166,64 @@ export class Chat extends window.HTMLElement {
     players = JSON.stringify(players)
     window.localStorage.setItem('scoreBoard', players)
     return JSON.parse(players)
+  }
+
+  /**
+   * Tracks highest zIndex in parent node and updates the current one
+   */
+  setZindex () {
+    let max = 0
+    const divChildren = this.divComponents.childNodes
+    divChildren.forEach((element, index) => {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT')) {
+        let z = 0
+        z = parseInt((element.style.zIndex), 10)
+        if ((z > max) && (z !== 'auto')) {
+          max = z
+          this.style.zIndex = max + 1
+        }
+      }
+    })
+  }
+
+  /**
+   * Changes position of new element based on length of parent node
+   */
+  getPosition () {
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
+    }
+  }
+
+  /**
+   * Functions below are for dragging the element
+   * @param {event} e The event
+   */
+  onMouseDown (e) {
+    this.isDown = true
+
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseUp (e) {
+    this.isDown = false
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseMove (e) {
+    e.preventDefault()
+    if (!this.isDown) return
+    const deltaX = e.clientX - this.mouseX
+    const deltaY = e.clientY - this.mouseY
+    this.container.style.left = this.elementX + deltaX + 'px'
+    this.container.style.top = this.elementY + deltaY + 'px'
   }
 }
 

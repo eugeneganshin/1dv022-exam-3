@@ -176,8 +176,6 @@ export class MemoryGame extends window.HTMLElement {
         window.setTimeout(() => {
           this.turn1.classList.add('hide')
           this.turn2.classList.add('hide')
-          console.log(this.turn1)
-          console.log(this.turn2)
 
           this.turn1 = null
           this.turn2 = null
@@ -201,7 +199,7 @@ export class MemoryGame extends window.HTMLElement {
     let max = 0
     const divChildren = this.divComponents.childNodes
     divChildren.forEach((element, index) => {
-      if (element.tagName === 'X-GAME') {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT')) {
         let z = 0
         z = parseInt((element.style.zIndex), 10)
         if ((z > max) && (z !== 'auto')) {
@@ -216,7 +214,6 @@ export class MemoryGame extends window.HTMLElement {
    * Changes position of new element based on length of parent node
    */
   getPosition () {
-    // console.log(this.divComponents.children.length)
     if (this.divComponents.children.length > 0) {
       this.container.style.top = `${this.divComponents.children.length * 10}px`
       this.container.style.left = `${this.divComponents.children.length * 10}px`

@@ -307,7 +307,7 @@ export class QuizGameRef extends window.HTMLElement {
     let max = 0
     const divChildren = this.divComponents.childNodes
     divChildren.forEach((element, index) => {
-      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME')) {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT')) {
         let z = 0
         z = parseInt((element.style.zIndex), 10)
         if ((z > max) && (z !== 'auto')) {
@@ -322,7 +322,6 @@ export class QuizGameRef extends window.HTMLElement {
    * Changes position of new element based on length of parent node
    */
   getPosition () {
-    // console.log(this.divComponents.children.length)
     if (this.divComponents.children.length > 0) {
       this.container.style.top = `${this.divComponents.children.length * 10}px`
       this.container.style.left = `${this.divComponents.children.length * 10}px`

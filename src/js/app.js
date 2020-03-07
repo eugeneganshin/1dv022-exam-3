@@ -5,7 +5,8 @@ import { Chat } from './chat.js'
 
 const components = document.querySelector('.components')
 const imgMem = document.querySelector('#logo-mem')
-const imgQuiz = document.querySelector('#logo-chat')
+const imgQuiz = document.querySelector('#logo-quiz')
+const imgChat = document.querySelector('#logo-chat')
 
 imgMem.addEventListener('click', event => {
   setTimeout(() => {
@@ -17,7 +18,11 @@ imgQuiz.addEventListener('click', e => {
     components.appendChild(new QuizGameRef())
   }, 0)
 })
-
+imgChat.addEventListener('click', e => {
+  setTimeout(() => {
+    components.appendChild(new Chat())
+  }, 0)
+})
 // const memGame = document.createElement('x-game')
 
 // document.querySelector('.components').appendChild(memGame)
