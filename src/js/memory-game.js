@@ -7,7 +7,6 @@ templateMem.innerHTML = `
 <style>
 :host {
   position: absolute;
-  z-index: 10;
 }
 img {
   min-width: 50px;
@@ -97,17 +96,19 @@ export class MemoryGame extends window.HTMLElement {
     this.elementX = this.container.offsetTop
     this.elementY = this.container.offsetLeft
     this.style.zIndex = 10
-    this.getPosition = this.getPosition()
   }
 
   connectedCallback () {
+    this.getPosition()
+    this.addEventListener('mousedown', e => {
+      this.setZindex()
+    })
     this.close.addEventListener('click', event => {
       event.preventDefault()
       this.remove()
     })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
-      this.setZindex()
     })
     document.addEventListener('mouseup', e => {
       e.preventDefault()
@@ -124,45 +125,6 @@ export class MemoryGame extends window.HTMLElement {
         this.updateLevel('medium')
       } else {}
     })
-  }
-
-  setZindex () {
-    let max = 0
-    const divChildren = this.divComponents.childNodes
-    divChildren.forEach((element, index) => {
-      if (element.tagName === 'X-GAME') {
-        let z = 0
-        z = parseInt((element.style.zIndex), 10)
-        if ((z > max) && (z !== 'auto')) {
-          max = z
-          this.style.zIndex = max + 1
-        }
-      }
-    })
-    // let max = 0
-    // const divChildren = this.divComponents.childNodes
-    // divChildren.forEach((elem, index) => {
-    //   if (elem.tagName === 'X-GAME') {
-    //     let z = parseInt((elem.style.zIndex), 10)
-    //     if (elem.style.zIndex > max) {
-    //       z = parseInt((elem.style.zIndex), 10)
-    //     }
-    //     max = Math.max(max, z)
-    //   }
-    // })
-    // this.style.zIndex = max + 1
-    // console.log(this.style.zIndex)
-  }
-
-  /**
-   * Functions below are to track z-index
-   */
-  getPosition () {
-    // console.log(this.divComponents.children.length)
-    if (this.divComponents.children.length > 0) {
-      this.container.style.top = `${this.divComponents.children.length * 10}px`
-      this.container.style.left = `${this.divComponents.children.length * 10}px`
-    }
   }
 
   getArrayOfPictures (condition) {
@@ -229,6 +191,35 @@ export class MemoryGame extends window.HTMLElement {
           this.turn2 = null
         }, 500)
       }
+    }
+  }
+
+  /**
+   * Tracks highest zIndex in parent node and updates the current one
+   */
+  setZindex () {
+    let max = 0
+    const divChildren = this.divComponents.childNodes
+    divChildren.forEach((element, index) => {
+      if (element.tagName === 'X-GAME') {
+        let z = 0
+        z = parseInt((element.style.zIndex), 10)
+        if ((z > max) && (z !== 'auto')) {
+          max = z
+          this.style.zIndex = max + 1
+        }
+      }
+    })
+  }
+
+  /**
+   * Changes position of new element based on length of parent node
+   */
+  getPosition () {
+    // console.log(this.divComponents.children.length)
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
     }
   }
 
