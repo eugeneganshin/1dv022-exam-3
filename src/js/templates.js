@@ -283,3 +283,44 @@ img {
   </div>
 </div>
 `
+
+export const weatherTemplate = document.createElement('template')
+weatherTemplate.innerHTML = `
+<div class="container">
+  <div class="header"> Header</div>
+  <div class="notification"></div>
+  <div class="weather-container">
+    <div class="weather-icon"></div>
+    <div class="temperature-value"></div>
+    <div class="temperature-description"></div>
+    <div class="location"><p>-</p></div>
+  </div>
+</div>
+
+<style>
+:host {
+  position: absolute;
+}
+.container {
+  border-radius: 8px 8px 2px 2px;
+  z-index: 10;
+  min-width: 420px;
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+  text-align: center;
+  position: absolute;
+  top:0;
+  left: 0px;
+  padding-bottom: 20px;
+}
+
+.header {
+  border-radius: 8px 8px 0px 0px;
+  padding: 10px;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+  cursor: move;
+}
+</style>
+`
