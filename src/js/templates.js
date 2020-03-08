@@ -114,6 +114,9 @@ templateRef_.innerHTML = `
 </style>
 `
 // Chat template
+
+// {/* <input id="input-msg" type="text" maxlength="50"> */}
+
 export const templateChat_ = document.createElement('template')
 templateChat_.innerHTML = `
 <div class="container">
@@ -127,7 +130,7 @@ templateChat_.innerHTML = `
   </div>
  <div class="messages"></div>
  <div class="menu">
-  <input id="input-msg" type="text" maxlength="50">
+  <textarea id="input-msg" rows="1" cols="40"></textarea>
   <button id="send">Send</button>
  </div>
 </div>
@@ -169,6 +172,15 @@ templateChat_.innerHTML = `
 .messages {
   display: none;
   min-height:200px;
+  max-height:200px;
+  overflow-y:scroll;
+  margin-bottom: 40px;
+}
+
+#send {
+  position: relative;
+  height: 40;
+  bottom: 12;
 }
 
 .container-start {
@@ -180,7 +192,6 @@ templateChat_.innerHTML = `
 }
 
 .menu {
-  background-color: #2196F3;
   text-align: center;
   position:absolute;
   bottom: 0;
