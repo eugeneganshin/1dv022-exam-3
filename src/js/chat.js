@@ -27,22 +27,21 @@ export class Chat extends window.HTMLElement {
   }
 
   connectedCallback () {
-    // helpers
+    /**
+     * Helper functions
+     * @function checkLocalStorage if username exists, opens chat display
+     * @function getPosition changes offset position based on parent div
+     * @function setZindex sets zIndex to 10
+     */
     this.checkLocalStorage()
     this.getPosition()
     this.addEventListener('mousedown', e => {
       this.setZindex()
     })
-    this.startForm.addEventListener('input', e => {
-      this._validateForm()
-    })
-    this.startBtn.addEventListener('click', e => {
-      this.username = this.startForm.value
-      this.saveToLocalStorage(this.startForm.value)
-      this._hideStartForm()
-      this._showChatDisplay()
-      this._showMenu()
-    })
+
+    /**
+     * Functions for draging web component
+     */
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
     })
@@ -54,6 +53,24 @@ export class Chat extends window.HTMLElement {
       e.preventDefault()
       this.onMouseMove(e)
     })
+
+    /**
+     * Registration menu
+     */
+    this.startForm.addEventListener('input', e => {
+      this._validateForm()
+    })
+    this.startBtn.addEventListener('click', e => {
+      this.username = this.startForm.value
+      this.saveToLocalStorage(this.startForm.value)
+      this._hideStartForm()
+      this._showChatDisplay()
+      this._showMenu()
+    })
+
+    /**
+     * Top bar menu
+     */
     this.closeBtn.addEventListener('click', e => {
       e.preventDefault()
       window.setTimeout(() => {
@@ -65,7 +82,10 @@ export class Chat extends window.HTMLElement {
       this._hideMenu()
       this._showStartForm()
     })
-    // logic
+
+    /**
+     * Input field and send button menu
+     */
     this.inputMsg.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
         this.getNameAndMsg(this.inputMsg.value)
@@ -77,7 +97,10 @@ export class Chat extends window.HTMLElement {
       this.getNameAndMsg(this.inputMsg.value)
       this.inputMsg.value = ''
     })
-    // websocket
+
+    /**
+     * Web socket
+     */
     this.socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/')
     this.socket.addEventListener('open', e => {
 
@@ -87,7 +110,6 @@ export class Chat extends window.HTMLElement {
     })
   }
 
-  // should be able so see 20 messages so delete them if div length over 20
   renderData (data) {
     console.log(JSON.parse(data))
     const parsed = JSON.parse(data)
@@ -102,6 +124,12 @@ export class Chat extends window.HTMLElement {
     }
   }
 
+  /**
+   * Checks for input field and username
+   * Creates object for websocket and stringifies it
+   * Sends JSON object to  @function sendMsg
+   * @param {string} msg input field value of chat menu
+   */
   getNameAndMsg (msg) {
     const data = {
       type: 'message',
@@ -113,16 +141,18 @@ export class Chat extends window.HTMLElement {
     this.sendMsg(JSON.stringify(data))
   }
 
+  /**
+   * Simply sends message to the server
+   * @param {JSON object} data
+   */
   sendMsg (data) {
     this.socket.send(data)
   }
 
-  sendMsgEnter () {
-
-  }
-
-  getResponse () {
-  }
+  /**
+   *  Checks the localstorage for username
+   *  If already exists, shows chat display
+   */
 
   checkLocalStorage () {
     const user = window.localStorage.getItem('username')
@@ -135,6 +165,10 @@ export class Chat extends window.HTMLElement {
     }
   }
 
+  /**
+   * Clears local storage and creates new JSON obj with username
+   * @param {string} username
+   */
   changeLocalStorage (username) {
     let user = window.localStorage.getItem('username')
     window.localStorage.clear()
@@ -144,6 +178,10 @@ export class Chat extends window.HTMLElement {
     return JSON.parse(user)
   }
 
+  /**
+   * Checks if username exists, if not creates new JSON object with username
+   * @param {string} username
+   */
   saveToLocalStorage (username) {
     let user = window.localStorage.getItem('username')
     if (user === null) {
@@ -161,7 +199,7 @@ export class Chat extends window.HTMLElement {
   }
 
   /**
-   *  Validates the input field if its empty
+   * Validates the input field if its empty
    */
   _validateForm () {
     const inputVal = this.shadowRoot.querySelector('#username').value
@@ -172,6 +210,9 @@ export class Chat extends window.HTMLElement {
     }
   }
 
+  /**
+   * Helper functions below to render DOM
+   */
   _showMenu () {
     this.menu.style.display = 'block'
   }
