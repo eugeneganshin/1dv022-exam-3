@@ -120,7 +120,7 @@ templateRef_.innerHTML = `
 export const templateChat_ = document.createElement('template')
 templateChat_.innerHTML = `
 <div class="container">
- <div class="header"><p id="close">x</p></div>
+ <div class="header"><p id="change-nick">change nickname</p><p id="close">x</p></div>
  <div class="container-start">
     <form id="start-form">
       <label for="username">Username:</label>
@@ -166,6 +166,15 @@ templateChat_.innerHTML = `
   padding: 0px 20px 0px 0px;
   margin-top: -10px;
   float: right;
+  cursor: pointer;
+}
+
+#change-nick {
+  display: inline;
+  margin: 0;
+  padding: 0px 20px 0px 0px;
+  margin-top: -10px;
+  float: left;
   cursor: pointer;
 }
 

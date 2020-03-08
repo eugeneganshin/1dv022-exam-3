@@ -14,6 +14,8 @@ export class Chat extends window.HTMLElement {
     this.constainerStart = this.shadowRoot.querySelector('.container-start')
     this.startForm = this.shadowRoot.querySelector('#username')
     this.startBtn = this.shadowRoot.querySelector('#start')
+    this.closeBtn = this.shadowRoot.querySelector('#close')
+    this.changeNick = this.shadowRoot.querySelector('#change-nick')
 
     this.menu = this.shadowRoot.querySelector('.menu')
     this.inputMsg = this.shadowRoot.querySelector('#input-msg')
@@ -52,6 +54,17 @@ export class Chat extends window.HTMLElement {
       e.preventDefault()
       this.onMouseMove(e)
     })
+    this.closeBtn.addEventListener('click', e => {
+      e.preventDefault()
+      window.setTimeout(() => {
+        this.divComponents.removeChild(this)
+      }, 0)
+    })
+    this.changeNick.addEventListener('click', e => {
+      this._hideChatDisplay()
+      this._hideMenu()
+      this._showStartForm()
+    })
     // logic
     this.inputMsg.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
@@ -62,6 +75,7 @@ export class Chat extends window.HTMLElement {
     })
     this.sendBtn.addEventListener('click', e => {
       this.getNameAndMsg(this.inputMsg.value)
+      this.inputMsg.value = ''
     })
     // websocket
     this.socket = new window.WebSocket('ws://vhost3.lnu.se:20080/socket/')
@@ -74,7 +88,6 @@ export class Chat extends window.HTMLElement {
   }
 
   // should be able so see 20 messages so delete them if div length over 20
-  // should save username in cache
   renderData (data) {
     console.log(JSON.parse(data))
     const parsed = JSON.parse(data)
@@ -122,6 +135,15 @@ export class Chat extends window.HTMLElement {
     }
   }
 
+  changeLocalStorage (username) {
+    let user = window.localStorage.getItem('username')
+    window.localStorage.clear()
+    user = { name: username }
+    user = JSON.stringify(user)
+    window.localStorage.setItem('username', user)
+    return JSON.parse(user)
+  }
+
   saveToLocalStorage (username) {
     let user = window.localStorage.getItem('username')
     if (user === null) {
@@ -154,12 +176,24 @@ export class Chat extends window.HTMLElement {
     this.menu.style.display = 'block'
   }
 
+  _hideMenu () {
+    this.menu.style.display = 'none'
+  }
+
+  _hideChatDisplay () {
+    this.messages.style.display = 'none'
+  }
+
   _showChatDisplay () {
     this.messages.style.display = 'block'
   }
 
   _hideStartForm () {
     this.constainerStart.style.display = 'none'
+  }
+
+  _showStartForm () {
+    this.constainerStart.style.display = 'block'
   }
 
   /**
