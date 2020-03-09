@@ -312,7 +312,7 @@ weatherTemplate.innerHTML = `
 .container {
   border-radius: 8px 8px 2px 2px;
   z-index: 10;
-  min-width: 420px;
+  min-width: 220px;
   background-color: #f1f1f1;
   border: 1px solid #f1f1f1;
   text-align: center;

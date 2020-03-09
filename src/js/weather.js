@@ -31,6 +31,11 @@ export class WeatherApp extends window.HTMLElement {
   }
 
   connectedCallback () {
+    /**
+     * Checks if browser supports geolocation or if user accepted to share his geolocation
+     * @function getCurrentPosition assings geolocation to variables
+     * @function getWeather takes assigned variables to send to serever
+     */
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         const latutude = position.coords.latitude
@@ -44,6 +49,10 @@ export class WeatherApp extends window.HTMLElement {
       this.notificationElement.style.display = 'block'
       this.notificationElement.innerHTML = '<p>Browser does not support Geolocation</p>'
     }
+
+    /**
+     * If user clicks on temperature unit changes it to fahrenheit
+     */
     this.tempElement.addEventListener('click', e => {
       if (this.weather.temperature.value === undefined) return
       if (this.weather.temperature.unit === 'celsius') {
@@ -57,6 +66,12 @@ export class WeatherApp extends window.HTMLElement {
     })
   }
 
+  /**
+   * Sends geolocation to OpenWeather API and gets object that contains weather forecast data
+   * Updates global object with weather
+   * @param {string} latitude the latitude from broser geolocation api
+   * @param {string} longitude the longitude from broser geolocation api
+   */
   async getWeather (latitude, longitude) {
     const api = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${this.key}`
     let response = await window.fetch(api)
@@ -70,6 +85,9 @@ export class WeatherApp extends window.HTMLElement {
     await this.displayWeather()
   }
 
+  /**
+   *  Renders webcomponent based on weather object
+   */
   async displayWeather () {
     this.iconElement.innerHTML = `<img src="/image/weather/${this.weather.iconId}.png">`
     this.tempElement.innerHTML = `${this.weather.temperature.value}°<span>C</span>`
@@ -77,6 +95,10 @@ export class WeatherApp extends window.HTMLElement {
     this.locationElement.innerHTML = `${this.weather.city}, ${this.weather.country}`
   }
 
+  /**
+   * Converts celsius to fahrenheit
+   * @param {number} value
+   */
   celsiusToFahrenheit (value) {
     return Math.floor((value * 9 / 5) + 23)
   }
