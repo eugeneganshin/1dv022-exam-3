@@ -31,7 +31,6 @@ export class WeatherApp extends window.HTMLElement {
   }
 
   connectedCallback () {
-    console.log(this)
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(position => {
         const latutude = position.coords.latitude
@@ -45,27 +44,24 @@ export class WeatherApp extends window.HTMLElement {
       this.notificationElement.style.display = 'block'
       this.notificationElement.innerHTML = '<p>Browser does not support Geolocation</p>'
     }
-    // this.tempElement.addEventListener('click', e => {
-    //   if (this.weather.temperature.value === undefined) return
-    //   if (this.weather.temperature.unit === 'celsius') {
-    //     this.celsiusToFahrenheit(this.weather.temperature.value)
-    //     this.fahrenheit = Math.floor(this.fahrenheit)
-    //     this.tempElement = `${this.fahrenheit}° <span>F</span>`
-    //     this.weather.temperature.unit = 'fahrenheit'
-    //   } else {
-    //     this.tempElement = `${this.weather.temperature.value}° <span>C</span>`
-    //     this.weather.temperature.unit = 'celsius'
-    //   }
-    // })
+    this.tempElement.addEventListener('click', e => {
+      if (this.weather.temperature.value === undefined) return
+      if (this.weather.temperature.unit === 'celsius') {
+        this.fahrenheit = this.celsiusToFahrenheit(this.weather.temperature.value)
+        this.tempElement.innerHTML = `${this.fahrenheit}°<span>F</span>`
+        this.weather.temperature.unit = 'fahrenheit'
+      } else {
+        this.tempElement.innerHTML = `${this.weather.temperature.value}° <span>C</span>`
+        this.weather.temperature.unit = 'celsius'
+      }
+    })
   }
 
   async getWeather (latitude, longitude) {
     const api = `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${this.key}`
-    console.log(api)
     let response = await window.fetch(api)
     response = await response.json()
     const data = response
-    console.log(data)
     this.weather.temperature.value = Math.floor(data.main.temp - this.kelvin)
     this.weather.description = data.weather[0].description
     this.weather.iconId = data.weather[0].icon
@@ -76,17 +72,13 @@ export class WeatherApp extends window.HTMLElement {
 
   async displayWeather () {
     this.iconElement.innerHTML = `<img src="/image/weather/${this.weather.iconId}.png">`
-    this.tempElement.innerHTML = `${this.weather.temperature.value}° <span>C</span>`
+    this.tempElement.innerHTML = `${this.weather.temperature.value}°<span>C</span>`
     this.descElement.innerHTML = this.weather.description
     this.locationElement.innerHTML = `${this.weather.city}, ${this.weather.country}`
   }
 
-  getCurrentPosition (setPosition, error) {
-  }
-
   celsiusToFahrenheit (value) {
-    this.fahrenheit = (this.weather.temperature * 9 / 5) + 23
-    return Math.floor(this.fahrenheit)
+    return Math.floor((value * 9 / 5) + 23)
   }
 }
 

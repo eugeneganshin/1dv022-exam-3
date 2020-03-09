@@ -287,7 +287,7 @@ img {
 export const weatherTemplate = document.createElement('template')
 weatherTemplate.innerHTML = `
 <div class="container">
-  <div class="header">Weather</div>
+  <div class="header"><p>Weather</p></div>
   <div class="notification"></div>
   <div class="weather-container">
     <div class="weather-icon">
@@ -329,6 +329,56 @@ weatherTemplate.innerHTML = `
   background-color: #2196F3;
   color: #fff;
   cursor: move;
+}
+
+.header p {
+  color: #293251;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 1.1em;
+}
+
+.notification{
+  background-color: #f8d7da;
+  display: none;
+}
+
+.notification p{
+  color: #721c24;
+  font-size: 1.2em;
+  margin: 0;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.temperature-value p{
+  padding: 0;
+  margin: 0;
+  color: #293251;
+  font-size: 4em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.temperature-value span{
+  color: #293251;
+  font-size: 0.5em;
+}
+
+.temperature-description p{
+  padding: 8px;
+  margin: 0;
+  color: #293251;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.location p{
+  margin: 0;
+  padding: 0;
+  color: #293251;
+  text-align: center;
+  font-size: 0.8em;
 }
 </style>
 `
