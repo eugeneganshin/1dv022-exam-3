@@ -6,6 +6,8 @@ export class WeatherApp extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(weatherTemplate.content.cloneNode(true))
 
+    this.divComponents = document.querySelector('.components')
+    this.close = this.shadowRoot.querySelector('#close-btn')
     this.container = this.shadowRoot.querySelector('.container')
     this.header = this.shadowRoot.querySelector('.header')
 
@@ -15,6 +17,11 @@ export class WeatherApp extends window.HTMLElement {
     this.descElement = this.shadowRoot.querySelector('.temperature-description p')
     this.locationElement = this.shadowRoot.querySelector('.location p')
     this.notificationElement = this.shadowRoot.querySelector('.notification')
+
+    this.isDown = false
+    this.elementX = this.container.offsetTop
+    this.elementY = this.container.offsetLeft
+    this.style.zIndex = 10
 
     this.key = 'd60a65e960f9e14c5af9fae26c15f36a'
     this.kelvin = 273
@@ -64,6 +71,31 @@ export class WeatherApp extends window.HTMLElement {
         this.weather.temperature.unit = 'celsius'
       }
     })
+
+    /**
+     *
+     */
+    this.getPosition()
+    this.addEventListener('mousedown', e => {
+      this.setZindex()
+    })
+    this.close.addEventListener('click', event => {
+      event.preventDefault()
+      window.setTimeout(() => {
+        this.divComponents.removeChild(this)
+      }, 0)
+    })
+    this.header.addEventListener('mousedown', e => {
+      this.onMouseDown(e)
+    })
+    document.addEventListener('mouseup', e => {
+      e.preventDefault()
+      this.onMouseUp(e)
+    })
+    document.addEventListener('mousemove', e => {
+      e.preventDefault()
+      this.onMouseMove(e)
+    })
   }
 
   /**
@@ -101,6 +133,64 @@ export class WeatherApp extends window.HTMLElement {
    */
   celsiusToFahrenheit (value) {
     return Math.floor((value * 9 / 5) + 23)
+  }
+
+  /**
+   * Tracks highest zIndex in parent node and updates the current one
+   */
+  setZindex () {
+    let max = 0
+    const divChildren = this.divComponents.childNodes
+    divChildren.forEach((element, index) => {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT') || (element.tagName === 'X-WEATHER')) {
+        let z = 0
+        z = parseInt((element.style.zIndex), 10)
+        if ((z > max) && (z !== 'auto')) {
+          max = z
+          this.style.zIndex = max + 1
+        }
+      }
+    })
+  }
+
+  /**
+   * Changes position of new element based on length of parent node
+   */
+  getPosition () {
+    if (this.divComponents.children.length > 0) {
+      this.container.style.top = `${this.divComponents.children.length * 10}px`
+      this.container.style.left = `${this.divComponents.children.length * 10}px`
+    }
+  }
+
+  /**
+   * Functions below are for dragging the element
+   * @param {event} e The event
+   */
+  onMouseDown (e) {
+    this.isDown = true
+
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseUp (e) {
+    this.isDown = false
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
+  }
+
+  onMouseMove (e) {
+    e.preventDefault()
+    if (!this.isDown) return
+    const deltaX = e.clientX - this.mouseX
+    const deltaY = e.clientY - this.mouseY
+    this.container.style.left = this.elementX + deltaX + 'px'
+    this.container.style.top = this.elementY + deltaY + 'px'
   }
 }
 

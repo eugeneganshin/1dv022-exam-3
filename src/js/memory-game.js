@@ -138,7 +138,10 @@ export class MemoryGame extends window.HTMLElement {
     let max = 0
     const divChildren = this.divComponents.childNodes
     divChildren.forEach((element, index) => {
-      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT')) {
+      if ((element.tagName === 'X-GAME') ||
+          (element.tagName === 'X-QUIZ-GAME') ||
+          (element.tagName === 'X-CHAT') ||
+          (element.tagName === 'X-WEATHER')) {
         let z = 0
         z = parseInt((element.style.zIndex), 10)
         if ((z > max) && (z !== 'auto')) {

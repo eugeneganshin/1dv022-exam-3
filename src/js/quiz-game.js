@@ -49,22 +49,18 @@ export class QuizGameRef extends window.HTMLElement {
     this.restartBtnScore = this.shadowRoot.querySelector('#restart-btn-score')
 
     this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
-    this.style.zIndex = 10
     this.players = []
     this.timeLeft = 10
     this.totalTime = 0
     this.countTime = setTimeout(args => { }, 0)
 
     this.isDown = false
-    this.elementX = 0
-    this.elementY = 0
+    this.elementX = this.container.offsetTop
+    this.elementY = this.container.offsetLeft
+    this.style.zIndex = 10
   }
 
   connectedCallback () {
-    this.getPosition()
-    this.addEventListener('mousedown', e => {
-      this.setZindex()
-    })
     /**
      * Checks if the input is not empty
      * @memberof QuizGameRef
@@ -90,6 +86,10 @@ export class QuizGameRef extends window.HTMLElement {
      * Listens for the mouse position on the window
      * If mouse is up then stops listening
      */
+    this.getPosition()
+    this.addEventListener('mousedown', e => {
+      this.setZindex()
+    })
     this.header.addEventListener('mousedown', e => {
       this.onMouseDown(e)
     })
@@ -307,7 +307,7 @@ export class QuizGameRef extends window.HTMLElement {
     let max = 0
     const divChildren = this.divComponents.childNodes
     divChildren.forEach((element, index) => {
-      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT')) {
+      if ((element.tagName === 'X-GAME') || (element.tagName === 'X-QUIZ-GAME') || (element.tagName === 'X-CHAT') || (element.tagName === 'X-WEATHER')) {
         let z = 0
         z = parseInt((element.style.zIndex), 10)
         if ((z > max) && (z !== 'auto')) {
@@ -329,15 +329,17 @@ export class QuizGameRef extends window.HTMLElement {
   }
 
   /**
-   * Functions below are for that you could drag the element
+   * Functions below are for dragging the element
    * @param {event} e The event
    */
-
   onMouseDown (e) {
     this.isDown = true
 
     this.mouseX = e.clientX
     this.mouseY = e.clientY
+
+    this.elementX = parseInt(this.container.style.left) || 0
+    this.elementY = parseInt(this.container.style.top) || 0
   }
 
   onMouseUp (e) {

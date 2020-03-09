@@ -287,7 +287,7 @@ img {
 export const weatherTemplate = document.createElement('template')
 weatherTemplate.innerHTML = `
 <div class="container">
-  <div class="header"><p>Weather</p></div>
+  <div class="header"><p>Weather<span id="close-btn">x</span></p></div>
   <div class="notification"></div>
   <div class="weather-container">
     <div class="weather-icon">
@@ -332,10 +332,14 @@ weatherTemplate.innerHTML = `
 }
 
 .header p {
-  color: #293251;
-  margin: 0 auto;
+  margin: 0;
+}
+
+#close-btn {
+  margin: 0;
   padding: 0;
-  font-size: 1.1em;
+  float: right;
+  cursor: pointer;
 }
 
 .notification{
