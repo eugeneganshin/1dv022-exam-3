@@ -1,3 +1,8 @@
+/**
+ * Credit to: ”Linnaeus university”
+ *  https://webbprogrammerare.se
+ */
+
 import { MemoryGame } from './memory-game.js'
 import { QuizGameRef } from './quiz-game.js'
 import { WeatherApp } from './weather.js'
