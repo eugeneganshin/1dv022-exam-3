@@ -287,13 +287,21 @@ img {
 export const weatherTemplate = document.createElement('template')
 weatherTemplate.innerHTML = `
 <div class="container">
-  <div class="header"> Header</div>
+  <div class="header">Weather</div>
   <div class="notification"></div>
   <div class="weather-container">
-    <div class="weather-icon"></div>
-    <div class="temperature-value"></div>
-    <div class="temperature-description"></div>
-    <div class="location"><p>-</p></div>
+    <div class="weather-icon">
+      <img src="/image/weather/unknown.png">
+    </div>
+    <div class="temperature-value">
+      <p>- °<span>C</span></p>
+    </div>
+    <div class="temperature-description">
+      <p>- °<span>C</span></p>
+    </div>
+    <div class="location">
+      <p>-</p>
+    </div>
   </div>
 </div>
 
